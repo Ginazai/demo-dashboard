@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AIOROS · Mantenimiento predictivo</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <script defer src="i18n.js"></script>
+  <script defer src="chart.js"></script>
+  <script defer src="facts.js"></script>
+  <script defer src="prompt.js"></script>
+  <script defer src="models/local.js"></script>
+  <script defer src="llm.js"></script>
+  <script defer src="summary.js"></script>
+  <script defer src="data/index.js"></script>
+  <script defer src="data/recomendadas.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="dash-header">
+    <div class="brand">
+      <span class="brand-mark">AIOROS</span>
+      <span class="mono-label" data-i18n="brand_sub">Mantenimiento predictivo · Demo</span>
+    </div>
+    <div class="lang" role="group" data-i18n-aria="lang_aria" aria-label="Idioma">
+      <button type="button" class="lang-btn btn-base btn-pill" id="lang-es" data-lang-set="es">ES</button>
+      <button type="button" class="lang-btn btn-base btn-pill" id="lang-en" data-lang-set="en">EN</button>
+    </div>
+  </header>
+
+  <main class="dash">
+    <div class="glass-pane panel p-controls" role="region" aria-labelledby="h-controls">
+      <h2 class="mono-label" id="h-controls" data-i18n="controls_title">Controles</h2>
+      <div class="controls">
+        <fieldset class="field">
+          <legend class="mono-label" data-i18n="sistema">Tipo de sistema</legend>
+          <div class="seg">
+            <input type="radio" name="seg" id="seg-LT" value="LT" checked><label for="seg-LT">LT</label>
+            <input type="radio" name="seg" id="seg-MT" value="MT"><label for="seg-MT">MT</label>
+            <input type="radio" name="seg" id="seg-ULT" value="ULT" disabled aria-describedby="seg-note"><label for="seg-ULT">ULT</label>
+          </div>
+          <span class="note" id="seg-note"></span>
+        </fieldset>
+
+        <fieldset class="field">
+          <legend class="mono-label" data-i18n="ventanas">Ventanas</legend>
+          <div class="wins" id="wins"></div>
+        </fieldset>
+
+        <div class="field">
+          <label class="mono-label" for="src-datos" data-i18n="src_datos">Datos precalculados</label>
+          <select id="src-datos" class="cerebras-input sel sel-wide"></select>
+        </div>
+
+        <div class="field">
+          <label class="mono-label" for="velocidad" data-i18n="velocidad">Velocidad</label>
+          <select id="velocidad" class="cerebras-input sel">
+            <option value="60">60x</option>
+            <option value="300" selected>300x</option>
+            <option value="1200">1200x</option>
+          </select>
+        </div>
+
+        <div class="field actions">
+          <button type="button" id="btn-run" class="btn-base btn-outline" data-i18n="run">Ejecutar</button>
+          <button type="button" id="btn-stop" class="btn-base btn-outline" data-i18n="stop" disabled>Detener</button>
+        </div>
+      </div>
+      <p class="run-status" id="run-status" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="glass-pane panel p-summary" role="region" aria-labelledby="h-summary">
+      <div class="panel-head">
+        <h2 class="mono-label" id="h-summary" data-i18n="summary_title">Resumen IA · Qué dicen los datos</h2>
+        <span class="tag-pill" id="summary-tag"></span>
+      </div>
+      <div class="model-bar">
+        <button type="button" id="btn-model" class="btn-base btn-outline" data-i18n="model_load">Cargar modelo de IA</button>
+        <span class="info-wrap"><button type="button" class="info-btn" aria-describedby="tip-model" data-i18n-aria="info_aria_model">i</button><div class="tip tip-wide" role="tooltip" id="tip-model" data-i18n="model_hint"></div></span>
+        <progress id="model-prog" max="1" value="0" hidden></progress>
+        <span class="note" id="model-note"></span>
+      </div>
+      <div class="summary-text" id="summary-text" aria-live="polite" aria-busy="false"></div>
+      <p class="warn" id="summary-warn" hidden></p>
+      <p class="meta" id="summary-meta"></p>
+      <p class="warn" id="summary-stale" hidden></p>
+      <div class="summary-actions">
+        <button type="button" id="btn-refresh" class="btn-base btn-outline" data-i18n="summary_refresh">Actualizar resumen</button>
+        <label class="check"><input type="checkbox" id="auto" checked><span data-i18n="auto">Automático</span></label>
+      </div>
+      <details class="data-used">
+        <summary data-i18n="data_used">Ver datos usados</summary>
+        <pre id="facts-json" tabindex="0"></pre>
+      </details>
+    </div>
+
+    <div class="glass-pane panel p-chart" role="region" aria-labelledby="h-chart">
+      <div class="head-info">
+        <h2 class="mono-label" id="h-chart" data-i18n="chart_title">Margen al umbral</h2>
+        <span class="info-wrap"><button type="button" class="info-btn" aria-describedby="tip-chart" data-i18n-aria="info_aria_chart">i</button><div class="tip tip-wide" role="tooltip" id="tip-chart" data-i18n="chart_help"></div></span>
+      </div>
+      <div id="charts"></div>
+    </div>
+
+    <div class="glass-pane panel p-tiles" role="region" aria-labelledby="h-tiles">
+      <h2 class="mono-label" id="h-tiles" data-i18n="tiles_title">Sensores</h2>
+      <div id="tiles" class="tiles"></div>
+    </div>
+
+    <div class="glass-pane panel p-vars" role="region" aria-labelledby="h-vars">
+      <h2 class="mono-label" id="h-vars" data-i18n="vars_title">Variables medidas</h2>
+      <div id="vars" class="vars"></div>
+    </div>
+
+    <div class="glass-pane panel p-log" role="region" aria-labelledby="h-log">
+      <h2 class="mono-label" id="h-log" data-i18n="log_title">Alertas de esta reproducción</h2>
+      <div id="log"></div>
+    </div>
+  </main>
+
+  <button type="button" id="theme-toggle" aria-label="Cambiar a tema claro">
+    <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 3a7 7 0 0 0 0 14z" fill="currentColor"/></svg>
+  </button>
+</body>
+</html>

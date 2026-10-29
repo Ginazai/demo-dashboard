@@ -1,0 +1,134 @@
+/* ============================================================================
+   AIOROS Gamma · Tema CLARO
+   Se activa cuando <html> tiene la clase .light. El tema oscuro es el de por
+   defecto (no necesita esta hoja). Los !important son para ganarle a las
+   utilidades de Tailwind y a los estilos en línea de admin.html.
+   ============================================================================ */
+
+html.light body { background-color: #F3F4F6 !important; color: #1A1D21 !important; }
+
+/* Texto */
+html.light .text-ivory  { color: #1A1D21 !important; }
+html.light .text-silver { color: #3F444C !important; }
+html.light .text-pewter,
+html.light .mono-label  { color: #6B7280 !important; }
+html.light .text-cyanGlow { color: #2563EB !important; }
+
+/* Texto metálico → sólido oscuro (el degradado claro sería invisible) */
+html.light .metal-text {
+  background: none !important;
+  -webkit-text-fill-color: #111418 !important;
+  color: #111418 !important;
+}
+
+/* Paneles de cristal → tarjeta blanca */
+html.light .glass-pane {
+  background: #FFFFFF !important;
+  border: 1px solid #E5E7EB !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+html.light .glass-pane:hover {
+  border-color: #D1D5DB !important;
+  box-shadow: 0 8px 20px -8px rgba(0,0,0,0.18) !important;
+}
+
+/* Logo: es blanco, así que en modo claro lo invertimos a oscuro para que se vea */
+html.light img[alt="AIOROS"] { filter: invert(1); }
+
+/* Barra superior */
+html.light header { background: #FFFFFF !important; border-bottom-color: #E5E7EB !important; }
+
+/* Bordes y fondos sutiles */
+html.light .border-white\/\[0\.06\],
+html.light .border-white\/\[0\.08\],
+html.light .border-white\/\[0\.05\] { border-color: #E5E7EB !important; }
+html.light .bg-white\/\[0\.06\] { background: #EEF2FF !important; }
+
+/* Inputs */
+html.light .cerebras-input {
+  background-color: #FFFFFF !important;
+  border-color: #D1D5DB !important;
+  color: #1A1D21 !important;
+}
+html.light .cerebras-input:focus {
+  border-color: #111418 !important;
+  box-shadow: none !important;
+}
+
+/* Botones */
+html.light .btn-primary {
+  background: #2563EB !important; color: #FFFFFF !important;
+  border-color: #2563EB !important; box-shadow: none !important;
+}
+html.light .btn-primary:hover { background: #1D4ED8 !important; border-color: #1D4ED8 !important; box-shadow: none !important; }
+html.light .btn-secondary { background: #F3F4F6 !important; color: #1A1D21 !important; border-color: #D1D5DB !important; }
+html.light .btn-secondary:hover { background: #E5E7EB !important; }
+html.light .btn-outline { background: transparent !important; color: #1A1D21 !important; border-color: #D1D5DB !important; }
+html.light .btn-outline:hover { background: #F3F4F6 !important; }
+html.light .btn-ghost { color: #111418 !important; }
+
+/* Piezas nuevas del sistema visual */
+html.light .headline, html.light .body-copy, html.light .body-copy-lg,
+html.light .eyebrow, html.light .tag-pill { color: #111418 !important; }
+html.light .offer-card { border-color: #D1D5DB !important; background: #FFFFFF !important; }
+html.light .offer-card:hover { border-color: #111418 !important; }
+html.light .slide-tick { background-color: #9CA0A8; }
+html.light .slide-tick.is-active { background-color: #111418; }
+html.light .lang-btn.active { color: #111418; box-shadow: inset 0 0 0 1px #111418; }
+html.light .bg-gunmetal { background-color: #E5E7EB !important; }
+html.light .border-gunmetal, html.light .border-steel { border-color: #D1D5DB !important; }
+
+/* ===== Estilos propios de admin.html ===== */
+html.light .panel { background: #FFFFFF !important; border-color: #E5E7EB !important; }
+html.light .admin-header { border-bottom-color: #E5E7EB !important; }
+html.light .admin-header h1, html.light .panel h2 { color: #1A1D21 !important; }
+html.light .tab-btn { background: #F3F4F6 !important; color: #3F444C !important; border-color: #D1D5DB !important; }
+html.light .tab-btn.active { background: #2563EB !important; color: #FFFFFF !important; border-color: #2563EB !important; }
+html.light .form-inline { background: #F9FAFB !important; border-color: #E5E7EB !important; }
+html.light .form-inline input, html.light .form-inline select, html.light .buscador-input {
+  background: #FFFFFF !important; color: #1A1D21 !important; border-color: #D1D5DB !important;
+}
+html.light .btn-submit { background: #2563EB !important; color: #FFFFFF !important; border-color: #2563EB !important; }
+html.light th { color: #6B7280 !important; border-bottom-color: #E5E7EB !important; }
+html.light td { border-bottom-color: #E5E7EB !important; }
+html.light .btn-logout { color: #1A1D21 !important; border-color: #D1D5DB !important; }
+html.light .btn-logout:hover { background: #F3F4F6 !important; }
+html.light .btn-accion { background: #F3F4F6 !important; color: #1A1D21 !important; border-color: #D1D5DB !important; }
+html.light .btn-accion:hover { background: #E5E7EB !important; }
+html.light .combo-lista { background: #FFFFFF !important; border-color: #D1D5DB !important; box-shadow: 0 12px 30px rgba(0,0,0,0.12) !important; }
+html.light .combo-item:hover { background: #F3F4F6 !important; }
+html.light .modal-content { background: #FFFFFF !important; border-color: #E5E7EB !important; }
+html.light .modal-header { border-bottom-color: #E5E7EB !important; }
+html.light .modal-header h3 { color: #1A1D21 !important; }
+html.light .btn-close { color: #6B7280 !important; }
+
+/* Códigos de tag (inventario y modal de cliente): legibles sobre fondo claro */
+html.light .badge-codigo,
+html.light .badge-tag {
+  background: #EEF2FF !important;
+  color: #1E3A8A !important;
+  border: 1px solid #C7D2FE !important;
+}
+
+/* Estados con más contraste en claro */
+html.light .badge.activo { background: #D1FAE5 !important; color: #065F46 !important; }
+html.light .badge.virgen { background: #FEF3C7 !important; color: #92400E !important; }
+
+/* Botón eliminar en claro */
+html.light .btn-eliminar { background: #FEF2F2 !important; color: #B91C1C !important; border-color: #FECACA !important; }
+html.light .btn-eliminar:hover { background: #FEE2E2 !important; }
+
+/* Botón flotante del interruptor de tema */
+#theme-toggle {
+  position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+  width: 44px; height: 44px; border-radius: 9999px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 150ms ease;
+  border: 1px solid #545457;
+  background: #000000;
+  color: #f0f0fa;
+}
+#theme-toggle:hover { border-color: #f0f0fa; }
+html.light #theme-toggle { color: #1A1D21; background: #FFFFFF; border-color: #D1D5DB; }

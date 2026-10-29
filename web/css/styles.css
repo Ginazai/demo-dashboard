@@ -1,0 +1,683 @@
+/*
+ * AIOROS - Hoja de Estilos Principal
+ *
+ * Sistema visual "centro de control" (ver DESIGN.md del proyecto):
+ *  - Lienzo negro puro y UN solo color de primer plano (#f0f0fa).
+ *  - Tipografía: Inter (texto) y JetBrains Mono (etiquetas), en mayúsculas con tracking 0.09–0.10em
+ *    para menú, etiquetas, botones y texto; 0.02em en titulares.
+ *  - Botones siempre con contorno de 1px, sin relleno, radio 4px.
+ *  - Cero elevación: sin sombras, sin degradados decorativos, sin blur.
+ *    Las únicas transiciones de color son los fundidos a negro sobre fotos.
+ */
+
+/* ==========================================================================
+   Variables Globales (Design Tokens)
+   ========================================================================== */
+:root {
+  /* Colores */
+  --color-void-black: #000000;
+  --color-star-white: #E8EAEE; /* texto: ivory del diseño original */
+  --color-dim-steel: #545457;
+  --color-dark-gunmetal: #404040;
+  /* Gris de texto secundario: más claro que Dim Steel para que el texto
+     pequeño siga siendo legible sobre negro (Dim Steel queda para bordes). */
+  --color-muted: #8C92A0;
+
+  /* Alias heredados (otras hojas y páginas los usan) */
+  --canvas: var(--color-void-black);
+  --charcoal: var(--color-void-black);
+  --surface: var(--color-void-black);
+  --surface-hover: #0b0b0c;
+  --ivory: #E8EAEE;
+  --silver: #C8CDD6;
+  --pewter: #8C92A0;
+  --cyanGlow: #E2E8F0;
+  --hairline: var(--color-dark-gunmetal);
+  --hairline-strong: var(--color-dim-steel);
+  --glass-bg: transparent;
+
+  /* Tipografía */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --tracking-label: 0.10em;
+  --tracking-label-sm: 0.09em;
+  --tracking-headline: 0.02em;
+
+  /* Espaciado y forma */
+  --section-gap: 60px;
+  --card-padding: 20px;
+  --element-gap: 18px;
+  /* Radios: se conservan los del diseño anterior (no los 4px de DESIGN.md) */
+  --radius-md: 8px;
+  --radius-pill: 9999px;
+  --radius-lg: 24px;
+}
+
+/* ==========================================================================
+   Configuración Base
+   ========================================================================== */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scroll snap solo en escritorio */
+@media (min-width: 1024px) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+  section {
+    scroll-snap-align: start;
+  }
+  footer {
+    scroll-snap-align: end;
+  }
+}
+
+body {
+  background-color: var(--color-void-black);
+  color: var(--color-star-white);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  font-feature-settings: "tnum" on;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-star-white);
+  color: var(--color-void-black);
+}
+
+/* ==========================================================================
+   Tipografía del sistema
+   ========================================================================== */
+
+/* Titular de sección: el elemento más grande de la pantalla */
+.headline {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-headline);
+  line-height: 1.1;
+  color: var(--color-star-white);
+}
+.headline-xl { font-size: 32px; line-height: 1.05; }
+.headline-md { font-size: 22px; }
+@media (min-width: 640px) {
+  .headline-xl { font-size: 48px; line-height: 1.0; }
+  .headline-md { font-size: 28px; }
+}
+@media (min-width: 1024px) {
+  .headline-md { font-size: 32px; }
+}
+
+/* Párrafo: se lee como lectura de instrumento, no como prosa */
+.body-copy {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: var(--tracking-label);
+  color: var(--color-star-white);
+  max-width: 500px;
+}
+.body-copy-lg {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: var(--tracking-label);
+  color: var(--color-star-white);
+  max-width: 500px;
+}
+@media (min-width: 640px) {
+  .body-copy-lg { font-size: 16px; }
+}
+
+/* Etiqueta / "eyebrow" */
+.eyebrow,
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-star-white);
+}
+.mono-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--pewter);
+}
+
+/* Texto con acabado metálico (diseño original) */
+.metal-text {
+  background: linear-gradient(180deg, #FFFFFF 0%, #C8CDD6 55%, #7F8796 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Resplandor suave (letras del acrónimo) */
+.glow-cyan {
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+}
+
+/* Antes "glassmorphism". Ahora: contorno fino sobre negro, sin relleno ni blur */
+.glass-pane {
+  background: transparent;
+  border: 1px solid var(--color-dark-gunmetal);
+  border-radius: var(--radius-lg);
+  box-shadow: none;
+  transition: border-color 150ms ease-out;
+}
+
+.glass-pane:hover {
+  border-color: var(--color-dim-steel);
+}
+
+/* ==========================================================================
+   Componentes: Botones (siempre con contorno, nunca rellenos)
+   ========================================================================== */
+.btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  border-radius: var(--radius-pill);
+  transition: all 150ms ease-out;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+/* Superficies de botón: se conservan las del diseño anterior
+   (degradado sutil, brillo interior y blur). Tipografía y radio son los nuevos. */
+
+/* Acción principal */
+.btn-primary {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  color: #FFFFFF;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 12px 26px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Brillo al pasar el mouse: el mismo en todos los botones */
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-outline:hover {
+  background: linear-gradient(180deg, rgba(226, 232, 240, 0.15) 0%, rgba(148, 163, 184, 0.05) 100%);
+  border-color: #E2E8F0;
+  color: #FFFFFF;
+  box-shadow: 0 0 25px rgba(226, 232, 240, 0.2);
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+}
+
+/* Acción secundaria */
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--color-star-white);
+  border: 1px solid rgba(220, 225, 235, 0.12);
+  padding: 12px 26px;
+}
+
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-star-white);
+  border: 1px solid rgba(220, 225, 235, 0.12);
+  padding: 12px 26px;
+}
+
+
+/* Enlaces del menú */
+.btn-ghost {
+  background: transparent;
+  color: rgba(240, 240, 250, 0.75);
+  border: none;
+  padding: 11px 14px;
+  font-size: 14px;
+}
+
+.btn-ghost:hover {
+  color: #FFFFFF;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Pill: solo para selectores tipo toggle */
+.btn-pill {
+  border-radius: var(--radius-pill);
+}
+
+/* Enfoque visible con teclado */
+.btn-base:focus-visible,
+a:focus-visible,
+button:focus-visible {
+  outline: 1px solid var(--color-star-white);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   Decoraciones
+   ========================================================================== */
+
+/* Indicador puntual (sin brillo) */
+.pewter-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--cyanGlow);
+  box-shadow: 0 0 8px var(--cyanGlow);
+}
+
+/* ==========================================================================
+   Animaciones Keyframes
+   ========================================================================== */
+@keyframes aioros-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: aioros-fade-up 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up { animation: none; }
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+
+/* ==========================================================================
+   Interacciones Especiales
+   ========================================================================== */
+
+/* Revelar elementos al hacer scroll */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 30px, 0);
+  transition: opacity 1200ms cubic-bezier(0.16, 1, 0.3, 1), transform 1200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Slider inmersivo */
+.slide-bg {
+  transition: opacity 1000ms cubic-bezier(0.16, 1, 0.3, 1), transform 1200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   Medios responsivos (teléfono y tablet, < 1024px)
+   En pantallas angostas la foto/video ocupa un "escenario" arriba que se funde
+   a negro, y el texto fluye debajo en lugar de encimarse sobre la imagen.
+   ========================================================================== */
+/* Los carruseles se pueden deslizar con el dedo: el navegador solo se queda
+   con el scroll vertical y deja el gesto horizontal al carrusel */
+.media-section { touch-action: pan-y; }
+
+@media (max-width: 1023px) {
+  .media-section {
+    --stage-h: 60svh;
+    display: block;
+  }
+  .media-stage {
+    bottom: auto !important;
+    height: var(--stage-h) !important;
+    overflow: hidden;
+  }
+  /* Fundido a negro: arriba (bajo el menú) y abajo (hacia el texto) */
+  .media-stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 22%),
+      linear-gradient(0deg, #000 0%, rgba(0,0,0,0.6) 18%, rgba(0,0,0,0) 45%);
+  }
+  /* Punto focal por imagen (--fx) para que el producto no quede recortado */
+  .slide-img {
+    background-position: var(--fx, 50%) center !important;
+  }
+  .media-copy {
+    position: relative !important;
+    inset: auto !important;
+    padding: calc(var(--stage-h) - 8px) 24px 72px !important;
+  }
+  .media-ticks {
+    bottom: auto !important;
+    top: calc(var(--stage-h) - 40px);
+  }
+}
+/* Teléfono vertical: recortes 4:5 livianos (~30 KB en vez de ~2 MB).
+   Ojo: las rutas de --bg-m van absolutas (/assets/...) porque un url() dentro
+   de una variable CSS se resolvería relativo a esta hoja (css/). */
+@media (max-width: 767px) {
+  .slide-img[style*="--bg-m"] {
+    background-image: var(--bg-m) !important;
+    background-position: center !important;
+  }
+}
+/* Teléfono acostado: poca altura, el escenario ocupa casi toda la pantalla */
+@media (max-width: 1023px) and (orientation: landscape) {
+  .media-section { --stage-h: 85svh; }
+  /* El video de Alpha es cuadrado: acostado se ve completo, a la derecha */
+  .vid-square { object-fit: contain !important; object-position: right center !important; }
+}
+
+.slide-content-block {
+  transition: opacity 600ms ease, transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Indicadores de carrusel: trazos finos, como marcas de instrumento */
+.slide-tick {
+  display: block;
+  width: 32px;
+  height: 18px;
+  padding: 8px 0;
+  background-clip: content-box;
+  background-color: var(--color-dim-steel);
+  border: none;
+  cursor: pointer;
+  transition: background-color 300ms ease;
+}
+.slide-tick:hover { background-color: rgba(240, 240, 250, 0.6); }
+.slide-tick.is-active { background-color: var(--color-star-white); }
+
+/* Selector de idioma (toggle tipo pill) */
+.lang-btn {
+  color: var(--color-muted);
+  letter-spacing: var(--tracking-label);
+}
+.lang-btn.active {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--cyanGlow);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+/* Tarjetas de oferta: contorno fino, sin relleno ni sombra */
+.offer-card {
+  border: 1px solid var(--color-dark-gunmetal);
+  background: transparent;
+  transition: border-color 150ms ease-out;
+}
+
+.offer-card:hover {
+  border-color: var(--color-star-white);
+}
+
+/* Etiqueta tipo tag (pill con contorno) */
+.tag-pill {
+  display: inline-block;
+  border: 1px solid var(--color-dim-steel);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-label-sm);
+  text-transform: uppercase;
+  color: var(--color-star-white);
+}
+
+/* Entradas de formulario */
+.cerebras-input {
+  background-color: transparent !important;
+  border: 1px solid var(--color-dark-gunmetal);
+  border-radius: var(--radius-md);
+  color: var(--color-star-white);
+  font-family: var(--font-sans);
+  letter-spacing: 0.02em;
+  transition: border-color 150ms ease-out;
+}
+
+.cerebras-input::placeholder {
+  color: var(--color-dim-steel);
+}
+
+.cerebras-input:focus {
+  border-color: var(--color-star-white);
+  outline: none;
+  box-shadow: none;
+}
+
+.cerebras-input option {
+  background: var(--color-void-black);
+  color: var(--color-star-white);
+}
+
+/* Tarjetas de selección con casillas */
+.checkbox-card {
+  border: 1px solid var(--color-dark-gunmetal);
+  background: transparent;
+  transition: border-color 150ms ease-out;
+  cursor: pointer;
+}
+
+.checkbox-card:hover {
+  border-color: var(--color-dim-steel);
+}
+
+.checkbox-card.selected {
+  border-color: var(--color-star-white);
+  background: rgba(240, 240, 250, 0.04);
+  box-shadow: none;
+}
+
+/* ==========================================================================
+   Portada: accesos directos a las soluciones
+   ========================================================================== */
+.sol-tile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px 10px 10px;
+  border: 1px solid var(--color-dark-gunmetal);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  text-decoration: none;
+  transition: all 150ms ease-out;
+}
+.sol-tile:hover {
+  border-color: #E2E8F0;
+  box-shadow: 0 0 25px rgba(226, 232, 240, 0.2);
+}
+.sol-tile img {
+  width: 52px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.sol-text { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.sol-name {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #FFFFFF;
+}
+.sol-desc { font-size: 13px; line-height: 1.4; color: var(--pewter); }
+.sol-arrow { width: 16px; height: 16px; color: var(--color-muted); flex-shrink: 0; }
+@media (min-width: 1024px) {
+  .sol-tile { flex-direction: column; align-items: flex-start; padding: 10px; }
+  .sol-tile img { width: 100%; height: 90px; }
+  .sol-arrow { display: none; }
+}
+
+/* Indicación "Desliza" al pie de la portada */
+.scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(220, 225, 235, 0.55);
+  text-decoration: none;
+}
+
+/* Teléfono/tablet: cada sección mide lo que su contenido (sin huecos negros) */
+@media (max-width: 1023px) {
+  .media-section { min-height: auto !important; }
+  .media-copy { padding-bottom: 36px !important; }
+  #pricing-section { padding-top: 56px !important; }
+}
+
+/* ==========================================================================
+   Flyers PDF debajo de "Request Kit"
+   ========================================================================== */
+.flyer-row {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.flyer-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pewter);
+}
+.flyer-links { display: flex; gap: 8px; }
+.flyer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid rgba(220, 225, 235, 0.12);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--silver);
+  text-decoration: none;
+  transition: all 150ms ease-out;
+}
+.flyer-link:hover {
+  border-color: #E2E8F0;
+  color: #FFFFFF;
+  box-shadow: 0 0 18px rgba(226, 232, 240, 0.18);
+}
+
+/* ==========================================================================
+   Páginas de información (portfolio.html y faq.html)
+   ========================================================================== */
+/* Solo se ve el texto del idioma activo */
+html[lang="en"] [data-lang="es"],
+html[lang="es"] [data-lang="en"] { display: none; }
+
+.page-nav-link {
+  font-size: 14px;
+  color: rgba(232, 234, 238, 0.75);
+  padding: 8px 12px;
+  border-radius: 9999px;
+  white-space: nowrap;
+  transition: all 150ms ease-out;
+}
+.page-nav-link:hover { color: #FFFFFF; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+.page-nav-link.is-current { color: #FFFFFF; background: rgba(255, 255, 255, 0.06); }
+.info-page { padding: 140px 24px 96px; }
+@media (min-width: 1024px) { .info-page { padding: 170px 40px 120px; } }
+.info-page .info-title { font-size: 2.25rem; }
+@media (min-width: 640px) { .info-page .info-title { font-size: 3rem; } }
+
+.info-kicker {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(226, 232, 240, 0.8);
+}
+.info-title {
+  margin-top: 12px;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+@media (min-width: 640px) { .info-title { font-size: 2.25rem; } }
+.info-lead { margin-top: 16px; font-size: 16px; line-height: 1.65; color: var(--silver); max-width: 680px; }
+.info-text { margin-top: 14px; font-size: 15px; line-height: 1.65; color: var(--pewter); max-width: 680px; }
+.info-text + .info-text { margin-top: 10px; }
+.info-text + .btn-base, .info-text ~ .btn-base { margin-top: 18px; }
+
+.info-nodes { margin-top: 28px; display: grid; gap: 14px; }
+@media (min-width: 768px) { .info-nodes { grid-template-columns: repeat(3, 1fr); } }
+.info-node {
+  padding: 18px;
+  border: 1px solid rgba(220, 225, 235, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+}
+.info-node-name { font-size: 17px; font-weight: 700; color: #FFFFFF; letter-spacing: -0.01em; }
+.info-node-meta { margin-top: 10px; display: grid; gap: 2px; }
+.info-node-meta dt {
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pewter);
+}
+.info-node-meta dd { font-size: 14px; color: var(--silver); }
+.info-models { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+.info-model {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: rgba(226, 232, 240, 0.08);
+  color: #E2E8F0;
+}
+
+.faq-list { margin-top: 24px; border-top: 1px solid rgba(220, 225, 235, 0.08); }
+.faq-item { border-bottom: 1px solid rgba(220, 225, 235, 0.08); }
+.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 2px;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-num { font-family: var(--font-mono); font-size: 12px; color: var(--pewter); padding-top: 3px; flex-shrink: 0; }
+.faq-q { flex: 1; font-size: 16px; font-weight: 600; color: var(--ivory); line-height: 1.4; }
+.faq-item summary:hover .faq-q { color: #FFFFFF; }
+.faq-chev { width: 18px; height: 18px; color: var(--pewter); flex-shrink: 0; margin-top: 2px; transition: transform 200ms ease; }
+.faq-item[open] .faq-chev { transform: rotate(180deg); }
+.faq-a { padding: 0 2px 20px 40px; font-size: 15px; line-height: 1.65; color: var(--silver); }
+.faq-a p + p { margin-top: 10px; }
+.faq-a a { color: #E2E8F0; text-decoration: underline; text-underline-offset: 3px; }
